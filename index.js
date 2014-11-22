@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var msg = "";
+var karma = 1;
 
 /*----Configure Express------*/
 /*app.configure(function() {
@@ -23,7 +24,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', function(request, response) {
-  response.send('Hello World! Msg: ' + msg);
+  response.send('Hello World! Msg: ' + msg + '|' + karma);
 });
 
 app.listen(app.get('port'), function() {
@@ -32,7 +33,14 @@ app.listen(app.get('port'), function() {
 
 /*--------Routes----------*/
 app.post('/update', function(req, res) {
-  msg = req.body.message;
+  var str = req.body.message;
+  var delimiter = "++"
+  var name = str.split(delimiter)[0];
+
+  msg = name;
+  karma = karma + 1;
+
+
   
   console.log("Message received: " + msg);
 

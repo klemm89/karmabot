@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var msg = "";
 
 /*----Configure Express------*/
 /*app.configure(function() {
@@ -10,16 +11,15 @@ var app = express();
   app.use(express.json());       // to support JSON-encoded bodies
   app.use(express.urlencoded()); // to support URL-encoded bodies
 });*/
+app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/public'));
+
 app.use(express.bodyParser());
 app.use(app.router);
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
 
-var msg = ""
-
-app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
   response.send('Hello World! Msg: ' + msg);

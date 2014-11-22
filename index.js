@@ -1,6 +1,12 @@
+/*----Require Config----*/
 var express = require('express');
 var app = express();
+
+var Firebase = require("firebase");
+var myFirebaseRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
+
 var bodyParser = require('body-parser');
+
 
 /*---Global Variables---*/
 var names = {};
@@ -68,4 +74,6 @@ var addKarma = function(name){
 	} else {
 		names[name] = 1;
 	}
+
+	myFirebaseRef.push(names);
 };

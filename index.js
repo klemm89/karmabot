@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 
 /*---Global Variables---*/
 var names = {};
+var displayMsg = null;
 var plusDelimiter = "++";
 
 /*----Configure Express------*/
@@ -25,7 +26,7 @@ app.listen(app.get('port'), function() {
 
 /*--------Routes----------*/
 app.get('/', function(request, response) {
-  response.send('Hello World! Msg: ' + names);
+  response.send('Hello World! Msg: ' + displayMsg);
 });
 
 app.post('/update', function(req, res) {
@@ -51,14 +52,16 @@ var getName = function(msg, delimiter){
 };
 
 var addKarma = function(name){
-	/*if(names[name]){
+	var nameRef = usersRef.child(name);
+	if(nameRef){
+		nameRef.update({"karma": nameRef.karma + 1});
 		names[name] = names[name] + 1;
-	} else {*/
+	} else {
 		usersRef.push(name);
-		var nameRef = usersRef.child(name);
+		nameRef = usersRef.child(name);
 		nameRef.update({
 			"karma": 1
 		});
-	/*}*/
+	}
 
 };

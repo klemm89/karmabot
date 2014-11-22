@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var msg = "";
 
 /*----Configure Express------*/
@@ -16,7 +17,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(express.bodyParser());
 app.use(app.router);
-app.use(express.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
 

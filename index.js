@@ -54,7 +54,7 @@ var getName = function(msg, delimiter){
 var addKarma = function(name){
 	var nameRef = usersRef.child(name);
 	if(nameRef){
-		var updatedKarma = nameRef.child("karma") + 1;
+		var updatedKarma = nameRef.child("karma").val() + 1;
 		console.log("Updated Karma: " + updatedKarma);
 		nameRef.update({"karma": updatedKarma});
 	} else {

@@ -4,6 +4,7 @@ var app = express();
 
 var Firebase = require("firebase");
 var myFirebaseRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
+var usersRef = myFirebaseRef.child("users");
 
 var bodyParser = require('body-parser');
 
@@ -13,26 +14,11 @@ var names = {};
 var plusDelimiter = "++";
 
 /*----Configure Express------*/
-/*app.configure(function() {
-  app.use(express.cookieParser());
-  app.use(express.bodyParser());
-  app.use(express.session({ secret: 'keyboard cat' }));
-  app.use(app.router);
-  app.use(express.json());       // to support JSON-encoded bodies
-  app.use(express.urlencoded()); // to support URL-encoded bodies
-});*/
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
-
 app.use(bodyParser.json());
-//app.use(app.router);
-//app.use(express.json());       // to support JSON-encoded bodies
-//app.use(express.urlencoded()); // to support URL-encoded bodies
 
-
-
-
-
+/*------Start Server-------*/
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 });
@@ -65,11 +51,14 @@ var getName = function(msg, delimiter){
 };
 
 var addKarma = function(name){
-	if(names[name]){
+	/*if(names[name]){
 		names[name] = names[name] + 1;
-	} else {
-		names[name] = 1;
-	}
+	} else {*/
+		usersRef.push(name);
+		var nameRef = usersRef.child(name);
+		nameRef.update({
+			"karma": 1
+		});
+	/*}*/
 
-	myFirebaseRef.push(names);
 };

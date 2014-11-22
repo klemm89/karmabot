@@ -53,7 +53,24 @@ var getName = function(msg, delimiter){
 
 var addKarma = function(name){
 	var nameRef = usersRef.child(name);
-	if(nameRef){
+
+	nameRef.once('value', function(snapshot) {
+	   if (snapshot.val() === null) {
+	       /* There is no user */
+	       usersRef.push(name);
+			nameRef = usersRef.child(name);
+			nameRef.update({
+				"karma": 1
+			});
+
+	   } else {
+	       /* User exists.*/
+	       var updatedKarma = nameRef.child("karma").val() + 1;
+			console.log("Updated Karma: " + updatedKarma);
+			nameRef.update({"karma": updatedKarma});
+	   }
+	});
+	/*if(nameRef){
 		var updatedKarma = nameRef.child("karma").val() + 1;
 		console.log("Updated Karma: " + updatedKarma);
 		nameRef.update({"karma": updatedKarma});
@@ -63,6 +80,6 @@ var addKarma = function(name){
 		nameRef.update({
 			"karma": 1
 		});
-	}
+	}*/
 
 };

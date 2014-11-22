@@ -1,6 +1,17 @@
 var express = require('express');
 var app = express();
 
+/*----Configure Express------*/
+app.configure(function() {
+  app.use(express.cookieParser());
+  app.use(express.bodyParser());
+  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(app.router);
+  app.use(express.json());       // to support JSON-encoded bodies
+  app.use(express.urlencoded()); // to support URL-encoded bodies
+});
+
+
 var msg = ""
 
 app.set('port', (process.env.PORT || 5000));

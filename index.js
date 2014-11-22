@@ -48,10 +48,6 @@ app.post('/update', function(req, res) {
   var name = getName(str,plusDelimiter);
   addKarma(name);
 
-
-  
-  console.log("Message received: " + msg);
-
   res.send("Updated");
 });
 

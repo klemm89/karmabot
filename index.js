@@ -16,7 +16,7 @@ app.listen(app.get('port'), function() {
 
 /*--------Routes----------*/
 app.post('/update', function(req, res) {
-  msg = req.body;
+  msg = req.body.message;
   
   console.log("Message received: " + msg);
 

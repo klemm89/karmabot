@@ -1,8 +1,10 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var msg = "";
-var karma = 1;
+
+/*---Global Variables---*/
+var names = {};
+var plusDelimiter = "++";
 
 /*----Configure Express------*/
 /*app.configure(function() {
@@ -23,22 +25,22 @@ app.use(bodyParser.json());
 
 
 
-app.get('/', function(request, response) {
-  response.send('Hello World! Msg: ' + msg + '|' + karma);
-});
+
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 });
 
 /*--------Routes----------*/
+app.get('/', function(request, response) {
+  response.send('Hello World! Msg: ' + names);
+});
+
 app.post('/update', function(req, res) {
   var str = req.body.message;
   var delimiter = "++"
-  var name = str.split(delimiter)[0];
-
-  msg = name;
-  karma = karma + 1;
+  var name = getName(str,plusDelimiter);
+  addKarma(name);
 
 
   
@@ -46,3 +48,24 @@ app.post('/update', function(req, res) {
 
   res.send("Updated");
 });
+
+/*---------Helper Functions---------*/
+
+var getName = function(msg, delimiter){
+	var str = msg.toUpperCase(),
+		name = str.split(delimiter)[0];
+
+  	if(name.length > 0){
+  		return name;
+  	} else {
+  		return null;
+  	}
+};
+
+var addKarma = function(name){
+	if(names[name]){
+		names[name] = names[name] + 1;
+	} else {
+		names[name] = 1;
+	}
+};

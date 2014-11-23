@@ -30,9 +30,10 @@ app.get('/', function(request, response) {
 });
 
 app.post('/update', function(req, res) {
-  var str = req.body.message;
+  var requestBody = req.body;
   var delimiter = "++"
-  var name = getName(str,plusDelimiter);
+  var name = getName(requestBody,plusDelimiter);
+  var group = getGroup(requestBody);
   addKarma(name);
 
   res.send("Updated");
@@ -40,8 +41,12 @@ app.post('/update', function(req, res) {
 
 /*---------Helper Functions---------*/
 
-var getName = function(msg, delimiter){
-	var str = msg.toUpperCase(),
+var getGroup = function(requestBody){
+	return requestBody.group.toUpperCase();
+};
+
+var getName = function(requestBody, delimiter){
+	var str = requestBody.message.toUpperCase(),
 		name = str.split(delimiter)[0];
 
   	if(name.length > 0){
@@ -55,6 +60,7 @@ var addKarma = function(name){
 	var nameRef = usersRef.child(name);
 
 	usersRef.once('value', function(snapshot) {
+
 		if (snapshot.child(name).val() === null) {
 	       /* There is no user */
 	  		usersRef.push(name);
@@ -62,24 +68,14 @@ var addKarma = function(name){
 			nameRef.update({
 				"karma": 1
 			});
+			console.log("Created user: " + name);
 
 	   	} else {
 	       	/* User exists.*/
 	      	var updatedKarma = snapshot.child(name + "/karma").val() + 1;
-			console.log("Updated Karma: " + updatedKarma);
 			nameRef.update({"karma": updatedKarma});
+			console.log("Updated Karma: " + updatedKarma);
 	   }
 	});
-	/*if(nameRef){
-		var updatedKarma = nameRef.child("karma").val() + 1;
-		console.log("Updated Karma: " + updatedKarma);
-		nameRef.update({"karma": updatedKarma});
-	} else {
-		usersRef.push(name);
-		nameRef = usersRef.child(name);
-		nameRef.update({
-			"karma": 1
-		});
-	}*/
 
 };

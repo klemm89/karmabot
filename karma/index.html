@@ -58,29 +58,30 @@
 
       myApp.controller('MyController', ['$scope', '$firebase',
         function($scope, $firebase) {
-          var ref = new Firebase("https://vh7i8ybyrmd.firebaseio-demo.com/");
-          var ChatsRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
-          $scope.messages = $firebase(ref).$asArray();
+            var ref = new Firebase("https://vh7i8ybyrmd.firebaseio-demo.com/");
+            var ChatsRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
+            $scope.messages = $firebase(ref).$asArray();
 
           //ADD GET GROUP METHOD
-          $scope.getGroup = function(e) {
+            $scope.getGroup = function(e) {
 
 
-            //LISTEN FOR RETURN KEY
-            if (e.keyCode === 13 && $scope.msg) {
-              //ALLOW CUSTOM OR ANONYMOUS USER NAMES
+                //LISTEN FOR RETURN KEY
+                if (e.keyCode === 13 && $scope.msg) {
+                  //ALLOW CUSTOM OR ANONYMOUS USER NAMES
 
-                var sync = $firebase(ChatsRef.child("groups").child($scope.msg));
-                var chatObject = sync.$asObject();
+                    var sync = $firebase(ChatsRef.child("groups").child($scope.msg));
+                    var chatObject = sync.$asObject();
 
-                $scope.chat = chatObject;
+                    $scope.chat = chatObject;
 
-              //$scope.messages.$add({from: name, body: $scope.msg});
+                  //$scope.messages.$add({from: name, body: $scope.msg});
 
-              //RESET MESSAGE
-              $scope.msg = "";
+                  //RESET MESSAGE
+                  $scope.msg = "";
+                }
             }
-        };
+        }
       ]);
     </script>
   </body>

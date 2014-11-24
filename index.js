@@ -59,8 +59,8 @@ var getUserNameFromRequest = function(requestBody, delimiter){
 
 var parseMessageForName = function(str) {
 	var regExp = /([A-z\s+]*)([A-z]+\+\+)/g;
-	var test = "Avi blah klem++ blah g++";
-	var match = regExp.exec(test);
+	var match = regExp.exec(str);
+	
 	console.log("Regex result: " + match);
 	console.log("Returning name: " + match[2]);
 
@@ -109,7 +109,7 @@ var addKarma = function(group, name){
 		console.log("No karma to add");
 		return;
 	}
-	
+
 	//initialize group if doesn't exist
 	var groupNameRef = getGroupNameRef(group);
 

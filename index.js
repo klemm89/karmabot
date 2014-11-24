@@ -47,9 +47,9 @@ var getGroupNameFromRequest = function(requestBody){
 };
 
 var parseUpdateRequest = function(requestBody){
-	var str = requestBody.message.toUpperCase(),
-		name = parseMessage(str).name,
-		operator = parseMessage(str).operator,
+	var msg = requestBody.message.toUpperCase(),
+		name = parseMessage(msg).name,
+		operator = parseMessage(msg).operator,
 		group = requestBody.group.toUpperCase();
 
 

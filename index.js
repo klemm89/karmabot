@@ -80,7 +80,7 @@ var parseUpdateRequest = function(requestBody){
 };
 
 var parseMessage = function(str) {
-	var regExp = /([A-z\s+]*\s)([A-z]+)(\+\+)/g;
+	var regExp = /([A-z\s+]*\s)([A-z]+)([\+\+]*[\-\-]*)/g;
 	//str = "Avishek avi++";
 	var match = regExp.exec(str);
 
@@ -135,9 +135,6 @@ var updateKarma = function(group, name, operator){
 		return;
 	}
 
-	//initialize group if doesn't exist
-	var groupNameRef = getGroupNameRef(group);
-
 	//initialize user if they don't exist
 	var userNameRef = getUserNameRef(group, name);
 
@@ -148,10 +145,12 @@ var updateKarma = function(group, name, operator){
 		if(operator.indexOf(plusOperator) > -1)
 		{
 			newKarma = newKarma + 1;
+			console.log("Plus operator detected");
 
 		} else if(operator.indexOf(minusOperator) > -1) {
 
 			newKarma = newKarma - 1;
+			console.log("Minus operator detected");
 		}
 
 		userNameRef.update({"karma": newKarma});

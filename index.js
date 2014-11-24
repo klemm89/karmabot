@@ -31,10 +31,10 @@ app.get('/', function(request, response) {
 
 app.post('/update', function(req, res) {
   var requestBody = req.body;
-  var delimiter = "++"
+  console.log("Request Body: " + requestBody);
   var name = getUserNameFromRequest(requestBody,plusDelimiter);
   var group = getGroupNameFromRequest(requestBody);
-  
+
   addKarma(group, name);
 
   res.send("Updated");

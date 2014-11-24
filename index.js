@@ -53,7 +53,7 @@ var parseUpdateRequest = function(requestBody){
 	var group = requestBody.group.toUpperCase();
 
 	var name = parseMessage(msg).name;
-	var operator = parseMessage(msg).operator,
+	var operator = parseMessage(msg).operator;
 		
 
 

@@ -5,7 +5,6 @@ var app = express();
 var Firebase = require("firebase");
 var myFirebaseRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
 
-
 var bodyParser = require('body-parser');
 
 

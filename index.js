@@ -34,7 +34,8 @@ app.post('/update', function(req, res) {
   var requestBody = req.body;
   console.log("Request Body: " + JSON.stringify(requestBody) );
 
-  var parsedRequest = parseUpdateRequest(requestBody);
+  var parsedRequest = {};
+  parsedRequest = parseUpdateRequest(requestBody);
   console.log("Value of parsedRequest: " + JSON.stringify(parsedRequest));
   //updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 

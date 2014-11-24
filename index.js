@@ -84,7 +84,7 @@ var createUser = function(groupName, userName){
 
 var userExists = function(groupName, userName) {
 
-	var usersRef = getGroupNameRef(group).child("users");
+	var usersRef = getGroupNameRef(groupName).child("users");
 	var userExists = undefined;
 
 	usersRef.once('value', function(snapshot) {

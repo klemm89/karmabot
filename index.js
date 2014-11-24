@@ -77,8 +77,8 @@ var parseUpdateRequest = function(requestBody){
 
 var parseMessage = function(str) {
 	var regExp = /([A-z\s+]*\s)([A-z]+)(\+\+)/g;
-	var test = "Avishek avi++";
-	var match = regExp.exec(test);
+	//str = "Avishek avi++";
+	var match = regExp.exec(str);
 
 	console.log("Regex result: " + match);
 	console.log("Returning name: " + match[2]);

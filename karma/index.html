@@ -49,8 +49,7 @@
       </li>
 
       <li ng-repeat='usr in chat.users'>
-        <strong class='example-chat-username'>{{usr}}</strong>
-        {{usr.karma}}
+        <strong class='example-chat-username'>{{usr.name}}</strong>: {{usr.karma}}
       </li>
     </ul>
     <script>
@@ -67,7 +66,7 @@
 
 
                 //LISTEN FOR RETURN KEY
-                if (e.keyCode === 13 && $scope.msg) {
+                //if (e.keyCode === 13 && $scope.msg) {
                   //ALLOW CUSTOM OR ANONYMOUS USER NAMES
 
                     var sync = $firebase(ChatsRef.child("groups").child($scope.msg));
@@ -79,7 +78,7 @@
 
                   //RESET MESSAGE
                   $scope.msg = "";
-                }
+             //   }
             }
         }
       ]);

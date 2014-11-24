@@ -35,7 +35,7 @@ app.post('/update', function(req, res) {
   console.log("Request Body: " + JSON.stringify(requestBody) );
 
   var parsedRequest = parseUpdateRequest(requestBody);
-  updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
+  //updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 
   res.send("Updated");
 });
@@ -46,11 +46,15 @@ var getGroupNameFromRequest = function(requestBody){
 	return requestBody.group.toUpperCase();
 };
 
+var getMessageFromRequest = function(requestBody){
+	return requestBody.message.toUpperCase();
+};
+
 var parseUpdateRequest = function(requestBody){
 	console.log("Parsing Request Body: " + JSON.stringify(requestBody) );
 
-	var msg = requestBody.message.toUpperCase();
-	var group = requestBody.group.toUpperCase();
+	var msg = getMessageFromRequest(requestBody);
+	var group = getGroupNameFromRequest(requestBody);
 
 	var name = parseMessage(msg).name;
 	var operator = parseMessage(msg).operator;

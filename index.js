@@ -31,7 +31,7 @@ app.get('/', function(request, response) {
 
 app.post('/update', function(req, res) {
   var requestBody = req.body;
-  console.log("Request Body: " + requestBody);
+  console.log("Request Body: " + JSON.stringify(requestBody) );
   var name = getUserNameFromRequest(requestBody,plusDelimiter);
   var group = getGroupNameFromRequest(requestBody);
 

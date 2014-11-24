@@ -73,7 +73,7 @@ var getUserNameRef = function(groupName, userName){
 		if(snapshot.child(groupName).child(userName).val() === null) {
 			/*---User does not exist yet---*/
 			console.log("User " + userName + " does not exist");
-			createUser(groupName);
+			createUser(groupName, userName);
 		}
 	});
 	return groupRef.child(groupName).child("users").child(userName);
@@ -94,35 +94,6 @@ var createUser = function(groupName, userName){
 	return groupNameRef.child("users").child(userName);
 };
 
-var userExists = function(groupName, userName) {
-
-	var usersRef = getGroupNameRef(groupName).child("users");
-	var userExists = null;
-
-	usersRef.once('value', function(snapshot) {
-		if (snapshot.child(userName).val() === null) {
-	       /* There is no user */
-	  		userExists = false;
-	   	} else {
-	       	/* User exists.*/
-	       	userExists = true;
-	   }
-	});
-
-	console.log("User: " + userName + " Exists: " + userExists);
-	return userExists;
-};
-
-var getUserKarma =  function(group, name){
-	var userNameRef = getUserNameRef(group, name);
-	var karma = null;
-	getUserNameRef.once('value', function(snapshot){
-		karma = snapshot.child("karma").val();
-	});
-
-	console.log("User: " + name + " Karma: " + karma);
-	return karma;
-}
 var addKarma = function(group, name){
 	//initialize group if doesn't exist
 	var groupNameRef = getGroupNameRef(group);

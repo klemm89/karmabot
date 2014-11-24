@@ -61,6 +61,7 @@ var getGroupNameRef = function(groupName){
 	groupRef.once('value', function(snapshot){
 		if(snapshot.child(groupName).val() === null) {
 			/*---Group does not exist yet---*/
+			console.log("Group " + groupName + " does not exist");
 			createGroup(groupName);
 		}
 	});
@@ -68,17 +69,28 @@ var getGroupNameRef = function(groupName){
 };
 
 var getUserNameRef = function(groupName, userName){
+	groupRef.once('value', function(snapshot){
+		if(snapshot.child(groupName).child(userName).val() === null) {
+			/*---User does not exist yet---*/
+			console.log("User " + userName + " does not exist");
+			createUser(groupName);
+		}
+	});
 	return groupRef.child(groupName).child("users").child(userName);
 };
 
 var createGroup = function(groupName){
 	groupRef.push(groupName);
+	console.log("Created Group: " + userName);
+
 	groupRef.child(groupName).push("users");
 };
 
 var createUser = function(groupName, userName){
 	var groupNameRef = getGroupNameRef(groupName);
 	groupNameRef.child("users").push(userName);
+	console.log("Created User: " + userName);
+	groupNameRef.child("users").child(userName).update({"karma": 0});
 	return groupNameRef.child("users").child(userName);
 };
 
@@ -114,6 +126,10 @@ var getUserKarma =  function(group, name){
 var addKarma = function(group, name){
 	//initialize group if doesn't exist
 	var groupNameRef = getGroupNameRef(group);
+
+	//initialize user if they don't exist
+
+	var userNameRef = asdfasdf;
 	var newKarma = null;
 
 	if(userExists(group, name)) {

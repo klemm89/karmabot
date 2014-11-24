@@ -17,7 +17,8 @@ var groupRef = myFirebaseRef.child("groups");
 
 /*----Configure Express------*/
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/karma'));
 app.use(bodyParser.json());
 
 /*------Start Server-------*/

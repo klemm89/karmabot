@@ -47,6 +47,8 @@ var getGroupNameFromRequest = function(requestBody){
 };
 
 var parseUpdateRequest = function(requestBody){
+	console.log("Parsing Request Body: " + JSON.stringify(requestBody) );
+
 	var msg = requestBody.message.toUpperCase(),
 		name = parseMessage(msg).name,
 		operator = parseMessage(msg).operator,
@@ -64,6 +66,8 @@ var parseUpdateRequest = function(requestBody){
 	console.log("Group: " + group + " Name: " + name + " Operator: " + operator);
 
   	var parsedRequest = {"name": name, "operator": operator, "group": group};
+
+  	console.log("Parsed Request: " + JSON.stringify(parsedRequest));
 
   	return parsedRequest;
 };

@@ -11,7 +11,8 @@ var bodyParser = require('body-parser');
 /*---Global Variables---*/
 var names = {};
 var displayMsg = null;
-var plusDelimiter = "++";
+var plusOperator = "++";
+var minusOperator = "--";
 var groupRef = myFirebaseRef.child("groups");
 
 /*----Configure Express------*/
@@ -32,10 +33,9 @@ app.get('/', function(request, response) {
 app.post('/update', function(req, res) {
   var requestBody = req.body;
   console.log("Request Body: " + JSON.stringify(requestBody) );
-  var name = getUserNameFromRequest(requestBody,plusDelimiter);
-  var group = getGroupNameFromRequest(requestBody);
 
-  addKarma(group, name);
+  var parsedRequest = parseUpdateRequest(requestBody);
+  updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 
   res.send("Updated");
 });
@@ -46,25 +46,39 @@ var getGroupNameFromRequest = function(requestBody){
 	return requestBody.group.toUpperCase();
 };
 
-var getUserNameFromRequest = function(requestBody, delimiter){
-	var str = requestBody.message.toUpperCase(),
-		name = parseMessageForName(str);
+var parseUpdateRequest = function(requestBody){
+	var msg = requestBody.message.toUpperCase(),
+		name = parseMessage(msg).name,
+		operator = parseMessage(str).operator,
+		group = requestBody.group.toUpperCase();
 
-  	if(name.length > 0){
-  		return name;
+
+
+  	if(!(name.length > 0)){
+  		name = null;
   	} else {
   		return null;
   	}
+
+  	console.log("Parsed Request");	
+	console.log("Group: " + group + " Name: " + name + " Operator: " + operator);
+
+  	var parsedRequest = {"name": name, "operator": operator, "group": group};
+
+  	return parsedRequest;
 };
 
-var parseMessageForName = function(str) {
+var parseMessage = function(str) {
 	var regExp = /([A-z\s+]*\s)([A-z]+)(\+\+)/g;
-	var match = regExp.exec(str);
+	var test = "Avishek avi++";
+	var match = regExp.exec(test);
 
 	console.log("Regex result: " + match);
 	console.log("Returning name: " + match[2]);
+	console.log("Returning operator: " + match[3]);
 
-	return match[2];
+	var parsedMessage = {"name": match[2], "operator": match[3]};
+	return parsedMessage;
 };
 
 var getGroupNameRef = function(groupName){
@@ -104,7 +118,7 @@ var createUser = function(groupName, userName){
 	return groupNameRef.child("users").child(userName);
 };
 
-var addKarma = function(group, name){
+var updateKarma = function(group, name, operator){
 	if(!name){
 		console.log("No karma to add");
 		return;
@@ -118,7 +132,17 @@ var addKarma = function(group, name){
 
 	var newKarma = null;
 	userNameRef.once('value', function(snapshot){
-		newKarma = snapshot.child("karma").val() + 1;
+
+		newKarma = snapshot.child("karma").val();
+		if(operator.indexOf(plusOperator) > -1)
+		{
+			newKarma = newKarma + 1;
+
+		} else if(operator.indexOf(minusOperator) > -1) {
+
+			newKarma = newKarma - 1;
+		}
+
 		userNameRef.update({"karma": newKarma});
 		console.log("Updated Karma: " + newKarma);
 	});

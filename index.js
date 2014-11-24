@@ -128,19 +128,12 @@ var addKarma = function(group, name){
 	var groupNameRef = getGroupNameRef(group);
 
 	//initialize user if they don't exist
-
-	var userNameRef = asdfasdf;
-	var newKarma = null;
-
-	if(userExists(group, name)) {
-		newKarma = getUserKarma(group, name) + 1;
-	} else {
-		createUser(group, name);
-		newKarma = 1;
-	}
-
 	var userNameRef = getUserNameRef(group, name);
-	userNameRef.update({"karma": newKarma});
-	console.log("Updated Karma: " + newKarma);
 
+	var newKarma = null;
+	getUserNameRef.once('value', function(snapshot){
+		newKarma = snapshot.child("karma").val() + 1;
+		userNameRef.update({"karma": newKarma});
+		console.log("Updated Karma: " + newKarma);
+	});
 };

@@ -70,7 +70,7 @@ var getGroupNameRef = function(groupName){
 
 var getUserNameRef = function(groupName, userName){
 	groupRef.once('value', function(snapshot){
-		if(snapshot.child(groupName).child(userName).val() === null) {
+		if(snapshot.child(groupName).child("users").child(userName).val() === null) {
 			/*---User does not exist yet---*/
 			console.log("User " + userName + " does not exist");
 			createUser(groupName, userName);

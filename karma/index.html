@@ -60,20 +60,13 @@
           //ADD GET GROUP METHOD
             $scope.getGroup = function(e) {
 
-
                 //LISTEN FOR RETURN KEY
-                //if (e.keyCode === 13 && $scope.msg) {
-                  //ALLOW CUSTOM OR ANONYMOUS USER NAMES
-
+                if (/*e.keyCode === 13 &&*/$scope.msg) {
+                  
                     var sync = $firebase(ChatsRef.child("groups").child($scope.msg));
                     var chatObject = sync.$asObject();
-
-                    $scope.chat = chatObject;
-
-                  //$scope.messages.$add({from: name, body: $scope.msg});
-
-            
-             //   }
+                    $scope.chat = chatObject;           
+                }
             }
         }
       ]);

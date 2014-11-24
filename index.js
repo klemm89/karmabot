@@ -34,6 +34,7 @@ app.post('/update', function(req, res) {
   var delimiter = "++"
   var name = getUserNameFromRequest(requestBody,plusDelimiter);
   var group = getGroupNameFromRequest(requestBody);
+  
   addKarma(group, name);
 
   res.send("Updated");

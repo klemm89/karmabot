@@ -30,7 +30,7 @@ app.get('/', function(request, response) {
   response.send('Hello World! Msg: ' + displayMsg);
 });
 
-app.get('/angular', function(request, response) {
+app.get('/karma', function(request, response) {
   response.sendfile('karma/index.html');
 });
 
@@ -117,15 +117,13 @@ var getUserNameRef = function(groupName, userName){
 var createGroup = function(groupName){
 	groupRef.child(groupName).set({"users":{}});
 	console.log("Created Group: " + groupName);
-
-	//groupRef.child(groupName).push("users");
 };
 
 var createUser = function(groupName, userName){
-	var groupNameRef = getGroupNameRef(groupName);
-	//groupNameRef.child("users").push(userName);
-	console.log("Created User: " + userName);
+	var groupNameRef = getGroupNameRef(groupName);	
 	groupNameRef.child("users").child(userName).set({"name": userName, "karma": 0});
+
+	console.log("Created User: " + userName);
 	return groupNameRef.child("users").child(userName);
 };
 
@@ -138,7 +136,7 @@ var updateKarma = function(group, name, operator){
 	//initialize user if they don't exist
 	var userNameRef = getUserNameRef(group, name);
 
-	var newKarma = null;
+	var newKarma = 0;
 	userNameRef.once('value', function(snapshot){
 
 		newKarma = snapshot.child("karma").val();

@@ -4,6 +4,7 @@ var app = express();
 
 var Firebase = require("firebase");
 var myFirebaseRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
+var groupRef = myFirebaseRef.child("groups");
 var usersRef = myFirebaseRef.child("users");
 
 var bodyParser = require('body-parser');
@@ -32,20 +33,20 @@ app.get('/', function(request, response) {
 app.post('/update', function(req, res) {
   var requestBody = req.body;
   var delimiter = "++"
-  var name = getName(requestBody,plusDelimiter);
-  var group = getGroup(requestBody);
-  addKarma(name);
+  var name = getUserNameFromRequest(requestBody,plusDelimiter);
+  var group = getGroupNameFromRequest(requestBody);
+  addKarma(group, name);
 
   res.send("Updated");
 });
 
 /*---------Helper Functions---------*/
 
-var getGroup = function(requestBody){
+var getGroupNameFromRequest = function(requestBody){
 	return requestBody.group.toUpperCase();
 };
 
-var getName = function(requestBody, delimiter){
+var getUserNameFromRequest = function(requestBody, delimiter){
 	var str = requestBody.message.toUpperCase(),
 		name = str.split(delimiter)[0];
 
@@ -56,26 +57,65 @@ var getName = function(requestBody, delimiter){
   	}
 };
 
-var addKarma = function(name){
-	var nameRef = usersRef.child(name);
+var getGroupNameRef = function(groupName){
+	groupRef.once('value', function(snapshot){
+		if(snapshot.child(groupName).val() === null) {
+			/*---Group does not exist yet---*/
+			createGroup(groupName);
+		}
+	});
+	return groupRef.child(groupName);
+};
+
+var getUserNameRef = function(groupName, userName){
+	return groupRef.child(groupName).child("users").child(userName);
+};
+
+var createGroup = function(groupName){
+	groupRef.push(groupName);
+	groupRef.child(groupName).push("users");
+};
+
+var createUser = function(groupName, userName){
+	var groupNameRef = getGroupNameRef(groupName);
+	groupNameRef.child("users").push(userName);
+	return groupNameRef.child("users").child(userName);
+};
+
+var userExists = function(groupName, userName) {
+
+	var usersRef = getGroupNameRef(group).child("users");
+	var userExists = undefined;
 
 	usersRef.once('value', function(snapshot) {
-
-		if (snapshot.child(name).val() === null) {
+		if (snapshot.child(userName).val() === null) {
 	       /* There is no user */
-	  		usersRef.push(name);
-			nameRef = usersRef.child(name);
-			nameRef.update({
-				"karma": 1
-			});
-			console.log("Created user: " + name);
-
+	  		userExists = false;
+			console.log("User doesn't exist");
 	   	} else {
 	       	/* User exists.*/
-	      	var updatedKarma = snapshot.child(name + "/karma").val() + 1;
-			nameRef.update({"karma": updatedKarma});
-			console.log("Updated Karma: " + updatedKarma);
+	       	userExists = true;
+	      	console.log("User exists");
 	   }
 	});
+
+	return userExists;
+};
+
+var addKarma = function(group, name){
+	//initialize group if doesn't exist
+	var groupNameRef = getGroupNameRef(group);
+	var newKarma = null;
+
+	if(userExists(group, name)) {
+		newKarma = getUserKarma(group, name) + 1;
+	} else {
+		createUser(group, name);
+		newKarma = 1;
+	}
+
+	var userNameRef = getUserNameRef(group, name);
+	userNameRef.update({"karma": newKarma});
+	console.log("Updated Karma: " + newKarma);
 
 };

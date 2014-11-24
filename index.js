@@ -48,13 +48,23 @@ var getGroupNameFromRequest = function(requestBody){
 
 var getUserNameFromRequest = function(requestBody, delimiter){
 	var str = requestBody.message.toUpperCase(),
-		name = str.split(delimiter)[0];
+		name = parseMessageForName(str);
 
   	if(name.length > 0){
   		return name;
   	} else {
   		return null;
   	}
+};
+
+var parseMessageForName = function(str) {
+	var regExp = /([A-z\s+]*)([A-z]+\+\+)/g;
+	var test = "Avi blah klem++ blah g++";
+	var match = regExp.exec(test);
+	console.log("Regex result: " + match);
+	console.log("Returning name: " + match[2]);
+
+	return match[2];
 };
 
 var getGroupNameRef = function(groupName){
@@ -95,6 +105,11 @@ var createUser = function(groupName, userName){
 };
 
 var addKarma = function(group, name){
+	if(!name){
+		console.log("No karma to add");
+		return;
+	}
+	
 	//initialize group if doesn't exist
 	var groupNameRef = getGroupNameRef(group);
 

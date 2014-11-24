@@ -125,7 +125,7 @@ var createUser = function(groupName, userName){
 	var groupNameRef = getGroupNameRef(groupName);
 	//groupNameRef.child("users").push(userName);
 	console.log("Created User: " + userName);
-	groupNameRef.child("users").child(userName).set({"name": userName, "karma": 1});
+	groupNameRef.child("users").child(userName).set({"name": userName, "karma": 0});
 	return groupNameRef.child("users").child(userName);
 };
 

@@ -62,8 +62,8 @@
 
                 //LISTEN FOR RETURN KEY
                 if (/*e.keyCode === 13 &&*/$scope.msg) {
-                  
-                    var sync = $firebase(ChatsRef.child("groups").child($scope.msg));
+                    var searchString = $scope.msg.toUpperCase();
+                    var sync = $firebase(ChatsRef.child("groups").child(searchString));
                     var chatObject = sync.$asObject();
                     $scope.chat = chatObject;           
                 }

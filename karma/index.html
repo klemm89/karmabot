@@ -8,10 +8,9 @@
   <meta charset="utf-8">   
   <!--bootstrap-->
   <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css"/>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
   <!-- Optional theme -->
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" type="text/css"/>
 
     <script src="js/lib/jquery.js"> </script>
     <script src="js/lib/underscore.js"></script>
@@ -38,14 +37,28 @@
 <body unresolved ng-app="myApp" ng-controller="MyController">
    <body ng-controller="MyController">
 
-    <form>
-        Search: <input ng-model='msg' ng-keydown="getGroup($event)" type='text' id='messageInput'  placeholder='Chat name...'>
-    </form>
+    <div class="navbar navbar-inverse">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-inverse-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Karma Board</a>
+      </div>
+      <div class="navbar-collapse collapse navbar-inverse-collapse">
+
+        <form class="navbar-form navbar-left">
+          <input class="form-control col-lg-4" ng-model='msg' ng-keydown="getGroup($event)" type='text' id='messageInput'  placeholder='Chat name...'>
+        </form>
+      </div>
+    </div>
 
     <ul id='example-messages' class='example-chat-messages'>
 
       <li ng-repeat='usr in chat.users'>
-        <strong class='example-chat-username'>{{usr.name}}</strong>: {{usr.karma}}
+        <a href="#" class="btn btn-default">{{usr.name}}</a>
+        <a href="#" class="btn btn-primary disabled">{{usr.karma}}</a>
       </li>
     </ul>
     <script>

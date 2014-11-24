@@ -52,10 +52,10 @@
 
     <ul id='example-messages' class='example-chat-messages'>
 
-      <li ng-repeat='usr in chat.users'>
-        <a href="#" class="btn btn-default">{{usr.name}}</a>
-        <a href="#" class="btn btn-primary disabled">{{usr.karma}}</a>
-      </li>
+      <div ng-repeat='usr in chat.users'>
+        <a href="#" class="btn btn-primary">{{usr.name}}</a>
+        <a href="#" class="btn btn-default">{{usr.karma}}</a>
+      </div>
     </ul>
     <script>
       var myApp = angular.module("myApp", ["firebase"]);

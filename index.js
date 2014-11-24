@@ -37,7 +37,7 @@ app.post('/update', function(req, res) {
   var parsedRequest = {};
   parsedRequest = parseUpdateRequest(requestBody);
   console.log("Value of parsedRequest: " + JSON.stringify(parsedRequest));
-  //updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
+  updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 
   res.send(parsedRequest);
 });
@@ -61,23 +61,18 @@ var parseUpdateRequest = function(requestBody){
 	var name = parseMessage(msg).name;
 	var operator = parseMessage(msg).operator;
 		
-
-
-
   	if(!(name.length > 0)){
   		name = null;
-  	} else {
-  		return null;
   	}
 
   	console.log("Parsed Request");	
 	console.log("Group: " + group + " Name: " + name + " Operator: " + operator);
 
-  	var parsedRequest = {"name": name, "operator": operator, "group": group};
+  	var returnObject = {"name": name, "operator": operator, "group": group};
 
-  	console.log("Parsed Request: " + JSON.stringify(parsedRequest));
+  	console.log("Parsed Request: " + JSON.stringify(returnObject));
 
-  	return parsedRequest;
+  	return returnObject;
 };
 
 var parseMessage = function(str) {

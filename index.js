@@ -91,7 +91,7 @@ var getUserNameRef = function(groupName, userName){
 
 var createGroup = function(groupName){
 	groupRef.push(groupName);
-	console.log("Created Group: " + userName);
+	console.log("Created Group: " + groupName);
 
 	groupRef.child(groupName).push("users");
 };

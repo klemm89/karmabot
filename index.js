@@ -30,6 +30,10 @@ app.get('/', function(request, response) {
   response.send('Hello World! Msg: ' + displayMsg);
 });
 
+app.get('/angular', function(request, response) {
+  response.sendfile('karma/index.html');
+});
+
 app.post('/update', function(req, res) {
   var requestBody = req.body;
   console.log("Request Body: " + JSON.stringify(requestBody) );

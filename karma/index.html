@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+  <meta charset="utf-8">   
+  <!--bootstrap-->
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" type="text/css"/>
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css" type="text/css"/>
+
+
+   <link rel="stylesheet" href="css/animate.css" type="text/css"/>
+   <link rel="stylesheet" href="css/mafia.css" type="text/css"/>
+
+    <script src="js/lib/jquery.js"> </script>
+    <script src="js/lib/underscore.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--bootstrap-->
+
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="http://code.angularjs.org/1.2.10/angular.min.js"></script>
+    <script src="http://code.angularjs.org/1.2.9/angular-animate.js"></script>
+    <script src="js/lib/animate.js"></script>
+    <script src="js/lib/angular-dropdowns.js"></script>
+    <script src='https://cdn.firebase.com/js/client/1.1.1/firebase.js'></script>
+    <script src='https://cdn.firebase.com/libs/angularfire/0.8.0/angularfire.min.js'></script>
+
+   <!-- <script src="js/ngapp.js"></script>-->
+    <title>Mafia</title>
+
+    <!-- Bootstrap core CSS -->
+
+    <!-- Add custom CSS here -->
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <!--<link rel="stylesheet" type="text/css" href="css/demo.css" />-->
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="stylesheet" type="text/css" href="css/checkbox.css" />
+    <link rel="stylesheet" type="text/css" href="css/dropdowns.css" />
+
+</head>
+
+<body unresolved ng-app="myApp" ng-controller="MyController">
+   <body ng-controller="MyController">
+    <ul id='example-messages' class='example-chat-messages'>
+      <li ng-repeat='msg in messages'>
+        <strong class='example-chat-username'>{{msg.from}}</strong>
+        {{msg.body}}
+      </li>
+    </ul>
+    <script>
+      var myApp = angular.module("myApp", ["firebase"]);
+
+      myApp.controller('MyController', ['$scope', '$firebase',
+        function($scope, $firebase) {
+          var ref = new Firebase("https://vh7i8ybyrmd.firebaseio-demo.com/");
+          $scope.messages = $firebase(ref).$asArray();
+        }
+      ]);
+    </script>
+  </body>
+
+</body></html>

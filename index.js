@@ -115,17 +115,17 @@ var getUserNameRef = function(groupName, userName){
 };
 
 var createGroup = function(groupName){
-	groupRef.push(groupName);
+	groupRef.child(groupName).set({"users":{}});
 	console.log("Created Group: " + groupName);
 
-	groupRef.child(groupName).push("users");
+	//groupRef.child(groupName).push("users");
 };
 
 var createUser = function(groupName, userName){
 	var groupNameRef = getGroupNameRef(groupName);
-	groupNameRef.child("users").push(userName);
+	//groupNameRef.child("users").push(userName);
 	console.log("Created User: " + userName);
-	groupNameRef.child("users").child(userName).update({"name": userName, "karma": 1});
+	groupNameRef.child("users").child(userName).set({"name": userName, "karma": 1});
 	return groupNameRef.child("users").child(userName);
 };
 

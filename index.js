@@ -4,8 +4,7 @@ var app = express();
 
 var Firebase = require("firebase");
 var myFirebaseRef = new Firebase("https://resplendent-torch-4535.firebaseio.com/");
-var groupRef = myFirebaseRef.child("groups");
-var usersRef = myFirebaseRef.child("users");
+
 
 var bodyParser = require('body-parser');
 
@@ -14,6 +13,7 @@ var bodyParser = require('body-parser');
 var names = {};
 var displayMsg = null;
 var plusDelimiter = "++";
+var groupRef = myFirebaseRef.child("groups");
 
 /*----Configure Express------*/
 app.set('port', (process.env.PORT || 5000));
@@ -131,7 +131,7 @@ var addKarma = function(group, name){
 	var userNameRef = getUserNameRef(group, name);
 
 	var newKarma = null;
-	getUserNameRef.once('value', function(snapshot){
+	userNameRef.once('value', function(snapshot){
 		newKarma = snapshot.child("karma").val() + 1;
 		userNameRef.update({"karma": newKarma});
 		console.log("Updated Karma: " + newKarma);

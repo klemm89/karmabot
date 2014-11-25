@@ -129,8 +129,10 @@ var createUser = function(groupName, userName){
 };
 
 var updateKarma = function(group, name, operator){
-	if(!name){
-		console.log("No karma to add");
+	if(!name || 
+		(operator.indexOf(plusOperator) === -1) &&
+		(operator.indexOf(minusOperator) === -1)){
+		console.log("No command found");
 		return;
 	}
 

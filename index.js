@@ -50,11 +50,11 @@ app.post('/update', function(req, res) {
 /*---------Helper Functions---------*/
 
 var getGroupNameFromRequest = function(requestBody){
-	return requestBody.group.toUpperCase();
+	return requestBody.group.toUpperCase().trim();
 };
 
 var getMessageFromRequest = function(requestBody){
-	return requestBody.message.toUpperCase();
+	return requestBody.message.toUpperCase().trim();
 };
 
 var parseUpdateRequest = function(requestBody){

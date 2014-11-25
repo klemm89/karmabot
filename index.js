@@ -85,12 +85,17 @@ var parseMessage = function(str) {
 	//str = "Avishek avi++";
 	var match = regExp.exec(str);
 
-	console.log("Regex result: " + match);
-	console.log("Returning name: " + match[2]);
-	console.log("Returning operator: " + match[3]);
+	if(!match){
+		console.log("Regex does not match");
+		return {"name": "", "operator": ""};
+	} else {
+		console.log("Regex result: " + match);
+		console.log("Returning name: " + match[2]);
+		console.log("Returning operator: " + match[3]);
 
-	var parsedMessage = {"name": match[2], "operator": match[3]};
-	return parsedMessage;
+		var parsedMessage = {"name": match[2], "operator": match[3]};
+		return parsedMessage;
+	}
 };
 
 var getGroupNameRef = function(groupName){
@@ -132,6 +137,7 @@ var updateKarma = function(group, name, operator){
 	if(!name || 
 		(operator.indexOf(plusOperator) === -1) &&
 		(operator.indexOf(minusOperator) === -1)){
+		
 		console.log("No command found");
 		return;
 	}

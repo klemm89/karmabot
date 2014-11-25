@@ -1,36 +1,12 @@
-# node-js-getting-started
+# Karmabot
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+This is a node / angular / firebase app that supports a bot which monitors upvotes & downvotes within a Hangouts group chat.
 
-This application support the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
 
-## Running Locally
+## How it works
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
-
-```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku
-
-```
-$ heroku create
-$ git push heroku master
-$ heroku open
-```
-
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+-The robot has its own google account, which is added to the hangouts chat
+-Using an android phone that is logged in with the robot account, a tasker profile is set up to scrape the notification tray for hangouts notifications.
+-The tasker profile is set to strip out any newline characters and send the following POST request to the node server with the notification text.
+-The node server parses the notification text and figures out what person to add / subtract karma from, and then updates Firebase with the proper values.
+-The scoreboard for a chat room can be viewed by searching for the name of the chat room on the front end.

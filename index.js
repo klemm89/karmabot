@@ -9,15 +9,12 @@ var bodyParser = require('body-parser');
 
 
 /*---Global Variables---*/
-var names = {};
-var displayMsg = null;
 var plusOperator = "++";
 var minusOperator = "--";
 var groupRef = myFirebaseRef.child("groups");
 
 /*----Configure Express------*/
 app.set('port', (process.env.PORT || 5000));
-//app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/karma'));
 app.use(bodyParser.json());
 
@@ -28,7 +25,7 @@ app.listen(app.get('port'), function() {
 
 /*--------Routes----------*/
 app.get('/', function(request, response) {
-  response.send('Hello World! Msg: ' + displayMsg);
+  response.send('Hello World!');
 });
 
 app.get('/karma', function(request, response) {
@@ -42,6 +39,7 @@ app.post('/update', function(req, res) {
   var parsedRequest = {};
   parsedRequest = parseUpdateRequest(requestBody);
   console.log("Value of parsedRequest: " + JSON.stringify(parsedRequest));
+
   updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 
   res.send(parsedRequest);
@@ -49,14 +47,20 @@ app.post('/update', function(req, res) {
 
 /*---------Helper Functions---------*/
 
+// @param {Object} Json data from the update request
+// @return {Object} Extracted group field
 var getGroupNameFromRequest = function(requestBody){
 	return requestBody.group.toUpperCase().trim();
 };
 
+// @param {Object} Json data from the update request
+// @return {Object} Extracted message field
 var getMessageFromRequest = function(requestBody){
 	return requestBody.message.toUpperCase().trim();
 };
 
+// @param {Object} Takes the json data from the update request
+// @return {Object} Extracted name / operator / group data
 var parseUpdateRequest = function(requestBody){
 	console.log("Parsing Request Body: " + JSON.stringify(requestBody) );
 
@@ -75,11 +79,11 @@ var parseUpdateRequest = function(requestBody){
 
   	var returnObject = {"name": name, "operator": operator, "group": group};
 
-  	console.log("Parsed Request: " + JSON.stringify(returnObject));
-
   	return returnObject;
 };
 
+// @param {String} Chat message in string format
+// @return {Object} Name & operation. e.g. "Avi++" --> {name: "AVI", operator: "++"}
 var parseMessage = function(str) {
 	var regExp = /([A-z\s+]*\s)([A-z]+)([\+\+]*[\-\-]*)/g;
 	//str = "Avishek avi++";
@@ -98,6 +102,9 @@ var parseMessage = function(str) {
 	}
 };
 
+// Checks to see if the chat group exists. If not, creates and initializes it
+// @param {String} Name of group
+// @return {Object} Firebase reference for the group
 var getGroupNameRef = function(groupName){
 	groupRef.once('value', function(snapshot){
 		if(snapshot.child(groupName).val() === null) {
@@ -109,6 +116,9 @@ var getGroupNameRef = function(groupName){
 	return groupRef.child(groupName);
 };
 
+// Checks to see if the user exists in the chat. If not, creates and initializes
+// @param {String} Name of user
+// @return {Object} Firebase reference for the user
 var getUserNameRef = function(groupName, userName){
 	groupRef.once('value', function(snapshot){
 		if(snapshot.child(groupName).child("users").child(userName).val() === null) {
@@ -120,11 +130,17 @@ var getUserNameRef = function(groupName, userName){
 	return groupRef.child(groupName).child("users").child(userName);
 };
 
+// Creates a chat group in Firebase
+// @param {String} Name of group
 var createGroup = function(groupName){
 	groupRef.child(groupName).set({"users":{}});
 	console.log("Created Group: " + groupName);
 };
 
+// Creates a user in Firebase
+// @param {String} Name of group
+// @param {String} Name of user
+// @return {Object} Firebase reference for the user
 var createUser = function(groupName, userName){
 	var groupNameRef = getGroupNameRef(groupName);	
 	groupNameRef.child("users").child(userName).set({"name": userName, "karma": 0});
@@ -133,6 +149,12 @@ var createUser = function(groupName, userName){
 	return groupNameRef.child("users").child(userName);
 };
 
+// Checks to see if name & operator are valid.
+// If user / group don't exist in Firebase, creates them.
+// Updates the user's karma in Firebase according to operator
+// @param {String} Name of group
+// @param {String} Name of user
+// @param {String} Operation to be done on karma
 var updateKarma = function(group, name, operator){
 	if(!name || 
 		(operator.indexOf(plusOperator) === -1) &&

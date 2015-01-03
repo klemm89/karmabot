@@ -20,29 +20,29 @@ app.use(bodyParser.json());
 
 /*------Start Server-------*/
 app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
+	console.log("Node app is running at localhost:" + app.get('port'))
 });
 
 /*--------Routes----------*/
 app.get('/', function(request, response) {
-  response.send('Hello World!');
+	response.send('Hello World!');
 });
 
 app.get('/karma', function(request, response) {
-  response.sendfile('karma/index.html');
+	response.sendfile('karma/index.html');
 });
 
 app.post('/update', function(req, res) {
-  var requestBody = req.body;
-  console.log("Request Body: " + JSON.stringify(requestBody) );
+	var requestBody = req.body;
+	console.log("Request Body: " + JSON.stringify(requestBody) );
 
-  var parsedRequest = {};
-  parsedRequest = parseUpdateRequest(requestBody);
-  console.log("Value of parsedRequest: " + JSON.stringify(parsedRequest));
+  	var parsedRequest = {};
+	parsedRequest = parseUpdateRequest(requestBody);
+	console.log("Value of parsedRequest: " + JSON.stringify(parsedRequest));
 
-  updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
+	updateKarma(parsedRequest.group, parsedRequest.name, parsedRequest.operator);
 
-  res.send(parsedRequest);
+	res.send(parsedRequest);
 });
 
 /*---------Helper Functions---------*/
@@ -85,6 +85,8 @@ var parseUpdateRequest = function(requestBody){
 // @param {String} Chat message in string format
 // @return {Object} Name & operation. e.g. "Avi++" --> {name: "AVI", operator: "++"}
 var parseMessage = function(str) {
+	//Tasker sends a json formmated like isTopic2014() Avi++, The group name is striped off and a whitespace remains, without this whitespace the regex won't function as intended.
+	//This allows us to add a vote after a sentance (e.g. 'This is a terrible post Avi--')
 	var regExp = /([A-z\s+]*\s)([A-z]+)([\+\+]*[\-\-]*)/g;
 	//str = "Avishek avi++";
 	var match = regExp.exec(str);
